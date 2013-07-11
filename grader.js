@@ -56,19 +56,16 @@ var checkHtmlFile = function(htmlfile, checksfile) {
     return out;
 };
 
-var checkHtmlUrl = function (url, checksfile) {
-    $ = undefined;
-    rest.get(url).on('complete', function(data) {
-	$ = data;
+var loadHtmlUrl = function (url, checksfile, dict, callback) {
+
+    rest.get(url).on('complete', function(response) {
+	callback(response, checksfile, dict);
+
     });
-    var checks = loadChecks(checksfile).sort();
-    var out = {};
-    for(var ii in checks) {
-        var present = $(checks[ii]).length > 0;
-        out[checks[ii]] = present;
-    }
-    return out;
+
 }; 
+
+
     
     
 
@@ -84,21 +81,28 @@ if(require.main == module) {
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
 	.option('u, --url <url>', 'Url to index.html')
         .parse(process.argv);
+    
     if (program.url) {
-	/*console.log('1');
-	var temp = "/home/ubuntu/bitstarter/temp.html";
-	rest.get(program.url).on('complete', function (data, checkJson) {
-	    
-	    var fd = fs.openSync(temp, 'w');
-	    fs.writeFileSync(temp, data);
-	    fs.closeSync(fd);
-	}); */
-	var checkJson = checkHtmlUrl(program.url, program.checks);
+	//console.log('1111');
+	var checkJson = {};
+	loadHtmlUrl(program.url, program.checks, checkJson, function (data, checksfile, dict)  {
+	    //console.log(data);
+	    $ = cheerio.load(data);
+	    var checks = loadChecks(checksfile).sort();
+	    for(var ii in checks) {
+		var present = $(checks[ii]).length > 0;
+		dict[checks[ii]] = present;		
+	    }
+	    var outJson = JSON.stringify(dict, null, 4);
+	    console.log(outJson);
+	});
+	
     }else {
 	var checkJson = checkHtmlFile(program.file, program.checks);
+    
+	var outJson = JSON.stringify(checkJson, null, 4);
+	console.log(outJson);
     }
-    var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
     
 } else {
     exports.checkHtmlFile = checkHtmlFile;
