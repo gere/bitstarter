@@ -21,6 +21,7 @@ References:
    - https://developer.mozilla.org/en-US/docs/JSON#JSON_in_Firefox_2
 */
 
+var rest = require('restler');
 var fs = require('fs');
 var program = require('commander');
 var cheerio = require('cheerio');
@@ -55,6 +56,22 @@ var checkHtmlFile = function(htmlfile, checksfile) {
     return out;
 };
 
+var checkHtmlUrl = function (url, checksfile) {
+    $ = undefined;
+    rest.get(url).on('complete', function(data) {
+	$ = data;
+    });
+    var checks = loadChecks(checksfile).sort();
+    var out = {};
+    for(var ii in checks) {
+        var present = $(checks[ii]).length > 0;
+        out[checks[ii]] = present;
+    }
+    return out;
+}; 
+    
+    
+
 var clone = function(fn) {
     // Workaround for commander.js issue.
     // http://stackoverflow.com/a/6772648
@@ -65,10 +82,24 @@ if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
+	.option('u, --url <url>', 'Url to index.html')
         .parse(process.argv);
-    var checkJson = checkHtmlFile(program.file, program.checks);
+    if (program.url) {
+	/*console.log('1');
+	var temp = "/home/ubuntu/bitstarter/temp.html";
+	rest.get(program.url).on('complete', function (data, checkJson) {
+	    
+	    var fd = fs.openSync(temp, 'w');
+	    fs.writeFileSync(temp, data);
+	    fs.closeSync(fd);
+	}); */
+	var checkJson = checkHtmlUrl(program.url, program.checks);
+    }else {
+	var checkJson = checkHtmlFile(program.file, program.checks);
+    }
     var outJson = JSON.stringify(checkJson, null, 4);
     console.log(outJson);
+    
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
