@@ -64,3 +64,11 @@ p {
     color: white;
 }
 
+.copy {
+    padding-top: 2.5%;
+    padding-botton: 2.5%;
+    text-align: justify;
+}
+.asset {
+padding: 2.5% 0%;
+}
