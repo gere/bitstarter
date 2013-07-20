@@ -28,23 +28,23 @@ p {
     line-height: 24px;
 }
 
-.navigation, .pitch, .section1, .section2, .faq, .footer {
-    padding: 10px 0px;
+
+/* video pitch and action */
+.pitch {
+    padding: 2.5% 0%;
 }
-.video, .thermometer, .order, .social {
-    border: 1px dotted;
+.order {
+    padding: 2% 0%;
+}
+.actions {
+    background-color: #343434;
+    padding: 3% 0%;
+}
+.video, .thermometer, .order, .social, .statistics {
     text-align: center;
 }
-.video {
-    /* internal boders have 1px width, thus need to add 4 x 1px to 120px */
-    height: 124px;
-    line-height: 124px;
+
+.staistics h3, .statistics {
+    color: white;
 }
-.thermometer, .order, .social {
-    /* line height to vertically center */
-    height: 40px;
-    line-height: 40px;
-}
-div.row {
-    border: 1px solid;
-}
+
