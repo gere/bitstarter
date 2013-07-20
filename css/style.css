@@ -1,0 +1,50 @@
+/* Large destop */
+@media (min-width: 980px) {
+    body {
+        padding-top: 60px;
+    }
+}
+
+
+/* Main body and headings */
+body {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+}
+.heading, .subheading {
+    font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+    text-align: center;
+    
+}
+.container {
+    width: 960px;
+}
+p.lead {
+    padding-top: 1.5%;
+    font-size: 24px;
+    line-height: 30px;
+}
+p {
+    font-size:18px;
+    line-height: 24px;
+}
+
+.navigation, .pitch, .section1, .section2, .faq, .footer {
+    padding: 10px 0px;
+}
+.video, .thermometer, .order, .social {
+    border: 1px dotted;
+    text-align: center;
+}
+.video {
+    /* internal boders have 1px width, thus need to add 4 x 1px to 120px */
+    height: 124px;
+    line-height: 124px;
+}
+.thermometer, .order, .social {
+    /* line height to vertically center */
+    height: 40px;
+    line-height: 40px;
+}
+div.row {
+    border: 1px solid;
+}
